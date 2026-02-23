@@ -24,6 +24,6 @@ const { locale } = Astro.params as Params;
 const { page } = Astro.props as Props;
 ---
 
-<Base locale={locale}>
+<Base locale={locale} seo={page.seo}>
   <Blocks blocks={page.content} />
 </Base>

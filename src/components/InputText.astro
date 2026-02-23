@@ -1,17 +1,11 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-type Props = Omit<HTMLAttributes<"input">, 'type'>;
+type Props = Omit<HTMLAttributes<"input">, "type">;
 
 const { class: className, ...props } = Astro.props;
 ---
 
-<input
-{...props}
-type="text"
-class:list={["input-text", className]}
-/>
+<input {...props} class:list={["input-text", className]} type="text" />
 
-<style>
-
-</style>
+<style></style>

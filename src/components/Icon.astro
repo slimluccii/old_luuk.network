@@ -11,12 +11,13 @@ const { name, title, class: className, ...props } = Astro.props;
 ---
 
 <svg
+  {...props}
   class:list={["icon", `icon--${name}`, className]}
   aria-hidden={!title}
-  {...props}
+  role={title ? "img" : "presentation"}
 >
   {title && <title>{title}</title>}
-  <use xlink:href={`#${name}`} href={`#${name}`}></use>
+  <use href={`#${name}`}></use>
 </svg>
 
 <style>

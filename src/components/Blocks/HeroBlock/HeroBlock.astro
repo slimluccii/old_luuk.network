@@ -18,6 +18,7 @@ const { block } = Astro.props;
         pictureClass="hero-block-picture"
         data={block.subjectImage.responsiveImage}
         priority={true}
+        sizes="(min-width: 500px) 200px, 150px"
       />
 
       <Button
@@ -49,9 +50,10 @@ const { block } = Astro.props;
   }
 
   .hero-block__visual {
-    aspect-ratio: 16 / 9;
+    /*aspect-ratio: 16 / 9;*/
     inline-size: 100%;
     block-size: auto;
+    block-size: var(--image-size);
   }
 
   .hero-block :global(.hero-block-picture) {
@@ -83,10 +85,17 @@ const { block } = Astro.props;
   .hero-block-details {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-size-m);
+    gap: var(--spacing-size-s);
   }
 
   .hero-block__content h1 {
-    font-size: var(--typography-size-display);
+    font-weight: 500;
+    font-size: 35px;
+  }
+
+  @media (min-width: 500px) {
+    .hero-block__content h1 {
+      font-size: 45px;
+    }
   }
 </style>

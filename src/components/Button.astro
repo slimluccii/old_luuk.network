@@ -30,7 +30,7 @@ const {
     { "button--icon-only": iconOnly },
     { "button--round": round }
   ]}
-  data-astro-prefetch={Tag === "a" && prefetch}
+  {...Tag === "a" && prefetch && { "data-astro-prefetch": "hover" }}
   {...props}
 >
   {icon && <Icon class="button__icon" name={icon} />}

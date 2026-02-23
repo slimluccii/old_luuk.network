@@ -1,0 +1,41 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"div">;
+
+const { ...props } = Astro.props;
+
+const tabs = ["Tab 1", "Tab 2"];
+const activeTab = 0;
+---
+
+<div {...props} class="tabs" role="tablist">
+  <div class="tabs__menu">
+    {
+      tabs.map((tab, index) => (
+        <button
+          role="tab"
+          aria-selected={index === activeTab}
+          aria-controls={`tab-panel-${index}`}
+          id={`tab-${index}`}
+        >
+          {tab}
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    tabs.map((tab, index) => (
+      <div
+        role="tabpanel"
+        aria-labelledby={`tab-${index}`}
+        hidden={index !== activeTab}
+      >
+        {tab}
+      </div>
+    ))
+  }
+</div>
+
+<style></style>

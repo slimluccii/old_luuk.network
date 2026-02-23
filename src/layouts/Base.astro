@@ -1,6 +1,8 @@
 ---
+import type { ComponentProps } from "astro/types";
 import type { SiteLocale } from "@generated/datocms";
 import { Footer, Header, IconsSprite, SkipLink } from "@components";
+import { Seo } from "@datocms/astro";
 
 import "@generated/tokens.css";
 import "@styles/tokens.css";
@@ -13,9 +15,10 @@ import { useTranslations } from "src/i18n/utils";
 
 type Props = {
   locale: SiteLocale;
+  seo: ComponentProps<typeof Seo>["data"];
 };
 
-const { locale } = Astro.props;
+const { locale, seo } = Astro.props;
 const { t } = useTranslations(locale);
 ---
 
@@ -31,7 +34,7 @@ const { t } = useTranslations(locale);
       content="upgrade-insecure-requests"
     />
     <!-- Page title -->
-    <!-- <title>{title.content}</title> -->
+    <Seo data={seo} />
     <!-- Preconnect -->
     <link rel="preconnect" href="https://www.datocms-assets.com" />
     <!-- Asynchronous JS -->
@@ -55,7 +58,6 @@ const { t } = useTranslations(locale);
     />
     <!-- Prefetch & Prerender -->
     <!-- Everything else (meta tags, icons, open graphs, etc.) -->
-    <!-- <Seo data={seo} /> -->
     <meta name="generator" content={Astro.generator} />
   </head>
   <body>
@@ -90,12 +92,13 @@ const { t } = useTranslations(locale);
 
   .content-wrapper {
     display: flex;
+    position: relative;
     flex: 1;
     flex-direction: column;
     margin-inline: auto;
     border: 1px solid var(--color-surface-base);
     inline-size: 100%;
-    max-inline-size: 600px;
+    max-inline-size: 606px;
   }
 
   main {

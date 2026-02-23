@@ -10,6 +10,7 @@ interface Props {
 
 const { error } = Astro.props;
 ---
-<Base locale={'en' as SiteLocale}>
-    <div>{error instanceof Error ? error.message : "Unknown error"}</div>
+
+<Base locale={"en" as SiteLocale}>
+  <div>{error instanceof Error ? error.message : "Unknown error"}</div>
 </Base>

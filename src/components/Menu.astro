@@ -78,12 +78,31 @@ function getHref(page: Props["items"][0]["page"]) {
 </script>
 
 <style>
-  .menu-open-button,
-  .menu-close-button {
+  .menu-open-button {
     position: fixed;
-    right: var(--spacing-size-lg);
-    bottom: var(--spacing-size-lg);
     z-index: 999;
+    inset-block-end: max(
+      var(--spacing-size-lg),
+      env(safe-area-inset-bottom, 0px)
+    );
+    inset-inline-end: clamp(
+      var(--spacing-size-lg),
+      calc(50vw - 300px + var(--spacing-size-lg)),
+      calc(100vw - var(--spacing-size-lg))
+    );
+  }
+
+  .menu-close-button {
+    position: absolute;
+    z-index: 999;
+    inset-block-end: var(--spacing-size-lg);
+    inset-inline-end: var(--spacing-size-lg);
+  }
+
+  @media screen and (max-width: 500px) {
+    .menu-open-button {
+      inset-inline-end: var(--spacing-size-lg);
+    }
   }
 
   .menu {
@@ -94,15 +113,34 @@ function getHref(page: Props["items"][0]["page"]) {
       opacity 0.05s ease-out 0.15s,
       transform 0.2s ease-out;
     margin: 0px;
-    inset: 0px;
+    inset-block-end: 0px;
+    inset-block-start: 0px;
+    inset-inline-end: clamp(0px, calc(50vw - 300px), calc(50vw - 300px));
+    inset-inline-start: clamp(0px, calc(50vw - 300px), calc(50vw - 300px));
     border: 1px solid #0a2a3e;
-    border: none;
     background-color: #0a2a3e;
-    padding: 0px;
-    inline-size: 100dvw;
-    max-inline-size: none;
+    padding: var(--spacing-size-lg);
+    inline-size: 600px;
+    max-inline-size: 600px;
     block-size: 100dvh;
-    max-block-size: none;
+    max-block-size: 100dvh;
+  }
+
+  .menu:modal {
+    overflow: hidden;
+  }
+
+  body:has(.menu:modal) {
+    overflow: hidden;
+  }
+
+  @media screen and (max-width: 500px) {
+    .menu {
+      inset-inline-end: 0px;
+      inset-inline-start: 0px;
+      inline-size: 100vw;
+      max-inline-size: none;
+    }
   }
 
   .menu:open {

@@ -1,19 +1,49 @@
 ---
 import type { HTMLAttributes, HTMLTag } from "astro/types";
-import { FormMessage } from "@components";
 
-type Props = HTMLAttributes<HTMLTag>;
+type Props = HTMLAttributes<HTMLTag> & {
+  label: string;
+};
 
-const { class: className, ...props } = Astro.props;
+const { label, class: className, ...props } = Astro.props;
+
+const id = crypto.randomUUID();
+const errorId = crypto.randomUUID();
+
+let input = await Astro.slots.render("default");
+
+input = input.replace(
+  /(<(?:input|textarea|select)(?:\s[^>]*)?)>/i,
+  `$1 id="${id}" aria-describedby="${errorId}">`
+);
 ---
 
 <form-field {...props} class:list={["form-field", className]}>
-  <slot />
-  <FormMessage type="error" class="form-field__error"></FormMessage>
+  <label for={id}>{label}</label>
+  <Fragment set:html={input} />
+  <p id={errorId} class="form-field__error" role="status"></p>
 </form-field>
+
+<style>
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-size-sm);
+
+    & > * {
+      inline-size: fit-content;
+    }
+  }
+
+  .form-field__error {
+      color: var(--color-intent-critical);
+      font-size: var(--typography-size-caption);
+  }
+</style>
 
 <script>
   class FormField extends HTMLElement {
+    labelElement: HTMLLabelElement | null = null;
     inputElement:
       | HTMLInputElement
       | HTMLTextAreaElement
@@ -22,32 +52,49 @@ const { class: className, ...props } = Astro.props;
     errorElement: HTMLParagraphElement | null = null;
 
     connectedCallback() {
+      this.labelElement = this.querySelector("label");
       this.inputElement = this.querySelector("input, textarea, select");
-      this.errorElement = this.querySelector(".form-message--error");
+      this.errorElement = this.querySelector(".form-field__error");
+
+      // Set the id and aria-describedby attributes
+      if (this.inputElement && this.labelElement && this.errorElement) {
+        const id = this.labelElement.getAttribute("for") || "";
+        const errorId = this.errorElement.id;
+
+        this.inputElement.id = id;
+        this.inputElement.setAttribute("aria-describedby", errorId);
+      }
 
       this.inputElement?.addEventListener("input", () => {
-        this.inputElement?.checkValidity();
+        if (this.inputElement?.checkValidity()) {
+          this.clearError();
+        }
       });
+
       this.inputElement?.addEventListener("blur", () => {
         this.inputElement?.checkValidity();
       });
-      this.inputElement?.addEventListener("invalid", async (event) => {
+
+      this.inputElement?.addEventListener("invalid", (event) => {
         event.preventDefault();
+        this.showError();
       });
+    }
+
+    showError() {
+      if (this.inputElement && this.errorElement) {
+        this.errorElement.textContent = this.inputElement.validationMessage;
+        this.errorElement.hidden = false;
+      }
+    }
+
+    clearError() {
+      if (this.errorElement) {
+        this.errorElement.textContent = "";
+        this.errorElement.hidden = true;
+      }
     }
   }
 
   customElements.define("form-field", FormField);
 </script>
-
-<style>
-  .form-field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-size-sm);
-  }
-
-  .form-field:global(& .form-field__error) {
-      display: none;
-  }
-</style>

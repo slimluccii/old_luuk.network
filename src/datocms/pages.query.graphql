@@ -1,6 +1,13 @@
 #import '@datocms/page.fragment.graphql'
 
 query Pages($locale: SiteLocale) {
+  _site {
+    faviconMetaTags {
+      attributes
+      content
+      tag
+    }
+  }
   allPages(locale: $locale) {
     ...Page
   }

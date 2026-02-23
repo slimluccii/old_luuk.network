@@ -3,6 +3,7 @@ import type { APIRoute } from "astro";
 export const prerender = false;
 
 export const GET: APIRoute = ({ params, request }) => {
+  console.log("GET request received");
   return new Response(
     JSON.stringify({
       message: "This was a GET!"

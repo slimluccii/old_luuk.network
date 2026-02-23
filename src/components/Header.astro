@@ -2,14 +2,13 @@
 import type { HTMLAttributes } from "astro/types";
 import { Logo } from "@components";
 
-type Props = HTMLAttributes<"header"> & { menu: { items: any[] } };
+type Props = HTMLAttributes<"header">;
 
-const { menu, class: className, ...props } = Astro.props;
+const { class: className, ...props } = Astro.props;
 ---
 
 <enhanced-header>
   <header class:list={["header", className]} {...props}>
-    <!-- <Nav items={menu.items} /> -->
     <Logo />
   </header>
 </enhanced-header>
@@ -43,7 +42,11 @@ const { menu, class: className, ...props } = Astro.props;
     transition-duration: var(--motion-transition);
     inset-block-end: 0px;
     inset-inline: 0px;
-    background: linear-gradient(to bottom, var(--color-surface-base), transparent);
+    background: linear-gradient(
+      to bottom,
+      var(--color-surface-base),
+      transparent
+    );
     height: var(--spacing-size-lg);
     pointer-events: none;
     content: "";

@@ -2,12 +2,17 @@
 #import '@components/Blocks/SectionBlock/SectionBlock.fragment.graphql'
 
 fragment Page on PageRecord {
-    id
-    title
-    path
-    content {
-      __typename
-      ...HeroBlock
-      ...SectionBlock
-    }
+  seo: _seoMetaTags {
+    attributes
+    content
+    tag
+  }
+  id
+  title
+  path
+  content {
+    __typename
+    ...HeroBlock
+    ...SectionBlock
+  }
 }

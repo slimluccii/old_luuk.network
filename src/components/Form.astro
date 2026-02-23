@@ -6,14 +6,71 @@ type Props = HTMLAttributes<"form">;
 const { class: className, ...props } = Astro.props;
 ---
 
-<form {...props} class:list={["form", className]}>
-  <slot />
-</form>
+<luuk-form>
+  <form class:list={["form", className]} {...props}>
+    <slot />
+  </form>
+</luuk-form>
 
 <style>
-    .form {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-size-md);
-    }
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-size-md);
+  }
 </style>
+
+<script>
+  class LuukForm extends HTMLElement {
+    formElement: HTMLFormElement | null = null;
+    submitButton: HTMLButtonElement | null = null;
+    fields: Array<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> =
+      [];
+
+    enableLoading() {
+      this.fields.forEach((field) => field.setAttribute("disabled", "true"));
+      this.submitButton?.setAttribute("disabled", "true");
+    }
+
+    disableLoading() {
+      this.fields.forEach((field) => field.removeAttribute("disabled"));
+      this.submitButton?.removeAttribute("disabled");
+    }
+
+    connectedCallback() {
+      this.formElement = this.querySelector("form");
+      this.submitButton = this.querySelector("button[type='submit']");
+      this.fields = Array.from(
+        this.querySelectorAll("input, select, textarea")
+      );
+
+      this.formElement?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!this.formElement) return;
+
+        this.enableLoading();
+
+        const formData = new FormData(this.formElement);
+
+        try {
+          const response = await fetch(this.formElement.action, {
+            method: this.formElement.method,
+            body: formData
+          });
+
+          const result = await response.json();
+        } catch (error) {
+          console.error("Error:", error);
+          alert("Er is iets misgegaan. Probeer het later opnieuw.");
+        } finally {
+          setTimeout(() => {
+            this.disableLoading();
+          }, 2000);
+        }
+      });
+    }
+  }
+
+  customElements.define("luuk-form", LuukForm);
+</script>
