@@ -1,6 +1,5 @@
 # build output
 dist/
-!astrojs-scaleway-adapter/dist/
 # generated types
 .astro/
 .generated/
