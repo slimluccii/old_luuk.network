@@ -28,3 +28,6 @@ jobs:
         run: npm run build
         env:
           DATOCMS_TOKEN: ${{ secrets.DATOCMS_TOKEN }}
+
+      - name: Zip function
+        run: zip -r dist/function.zip dist/function
