@@ -31,3 +31,11 @@ jobs:
 
       - name: Zip function
         run: zip -r dist/function.zip dist/function
+
+      - name: Deploy function to Scaleway
+        uses: voorhoede/scaleway-functions-deploy-action/actions/deploy-function@main
+        with:
+          region: ${{ secrets.SCW_REGION }}
+          scw_secret_access_key: ${{ secrets.SCW_SECRET_ACCESS_KEY }}
+          scw_project_id: ${{ secrets.SCW_PROJECT_ID }}
+          dist_path: dist
