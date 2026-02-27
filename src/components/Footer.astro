@@ -1,62 +1,104 @@
 ---
-import { Button } from "@components";
+import type { FooterRecord } from "@generated/datocms";
 import type { HTMLAttributes } from "astro/types";
+import { Button, Logo, Voorhoede } from "@components";
 
-type Props = HTMLAttributes<"footer">;
+type Props = HTMLAttributes<"footer"> & FooterRecord;
 
-const { ...props } = Astro.props;
+const { title, text, ...props } = Astro.props;
 ---
 
-<footer {...props}>
-  <div class="footer__bottom">
-    <p class="copyright-notice">
-      © 2025 Luuk Brauckmann.&nbsp;<a
-        href="https://creativecommons.org/licenses/by-sa/4.0/"
-        target="_blank">CC BY-SA 4.0</a
-      >
-    </p>
+<footer {...props} class="footer">
+  <div class="footer__start">
+    <div class="footer-header">
+      <Logo />
+      <h2>{title}</h2>
+    </div>
+    <p>{text}</p>
+  </div>
+  <div class="footer-end">
+    <div class="footer-end__start">
+      <p class="copyright-notice">
+        © 2025 Luuk Brauckmann.&nbsp;<a
+          href="https://creativecommons.org/licenses/by-sa/4.0/"
+          target="_blank">CC BY-SA 4.0</a
+        >
+      </p>
 
-    <span class="social-links">
-      <Button
-        as="a"
-        icon="github"
-        iconOnly
-        variant="link"
-        href="https://github.com/slimluccii">GitHub</Button
-      >
-      <Button
-        as="a"
-        icon="codepen"
-        iconOnly
-        variant="link"
-        href="https://codepen.io/slimluccii">CodePen</Button
-      >
-      <Button
-        as="a"
-        icon="linkedin"
-        iconOnly
-        variant="link"
-        href="https://www.linkedin.com/in/luukbrauckmann">LinkedIn</Button
-      >
-    </span>
+      <span class="social-links">
+        <Button
+          as="a"
+          icon="github"
+          iconOnly
+          variant="link"
+          href="https://github.com/slimluccii">GitHub</Button
+        >
+        <Button
+          as="a"
+          icon="codepen"
+          iconOnly
+          variant="link"
+          href="https://codepen.io/slimluccii">CodePen</Button
+        >
+        <Button
+          as="a"
+          icon="linkedin"
+          iconOnly
+          variant="link"
+          href="https://www.linkedin.com/in/luukbrauckmann">LinkedIn</Button
+        >
+      </span>
+    </div>
+
+    <a href="https://voorhoede.nl/">
+      <span class="sr-only">Voorhoede</span>
+      <Voorhoede />
+    </a>
   </div>
 </footer>
 
 <style>
-  footer {
+  .footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-size-xxl);
     margin: 0px -1px -1px -1px;
     border: 1px solid var(--color-surface-raised);
     background-color: var(--color-surface-raised);
-    padding: var(--spacing-size-xxl) var(--spacing-size-lg)
-      var(--spacing-size-sm) var(--spacing-size-lg);
+    padding: var(--spacing-size-lg) var(--spacing-size-lg)
+      var(--spacing-size-sm);
   }
 
-  .footer__bottom {
+  .footer__start {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: var(--spacing-size-md);
+  }
+
+  .footer-header {
+    display: flex;
     align-items: center;
+    gap: var(--spacing-size-xs);
+  }
+
+  .footer h2 {
+    font-weight: bold;
+    font-size: 1em;
+    font-family: var(--typography-typeface-body);
+  }
+
+  .footer-end {
+    display: flex;
+    justify-content: space-between;
     gap: var(--spacing-size-m);
     font-size: var(--text-size-sm);
+  }
+
+  .footer-end__start {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: var(--spacing-size-md);
   }
 
   a {

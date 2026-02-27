@@ -11,4 +11,8 @@ query Pages($locale: SiteLocale) {
   allPages(locale: $locale) {
     ...Page
   }
+  footer(locale: $locale) {
+      title
+      text
+  }
 }

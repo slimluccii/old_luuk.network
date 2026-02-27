@@ -1,6 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
-import type { SiteLocale } from "@generated/datocms";
+import type { FooterRecord, SiteLocale } from "@generated/datocms";
 import { Footer, Header, IconsSprite, SkipLink } from "@components";
 import { Seo } from "@datocms/astro";
 
@@ -16,9 +16,10 @@ import { useTranslations } from "src/i18n/utils";
 type Props = {
   locale: SiteLocale;
   seo: ComponentProps<typeof Seo>["data"];
+  footer: FooterRecord;
 };
 
-const { locale, seo } = Astro.props;
+const { footer, locale, seo } = Astro.props;
 const { t } = useTranslations(locale);
 ---
 
@@ -70,7 +71,7 @@ const { t } = useTranslations(locale);
         <slot />
       </main>
 
-      <Footer class="footer" />
+      <Footer class="footer" {...footer} />
     </div>
 
     <IconsSprite />

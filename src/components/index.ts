@@ -18,3 +18,4 @@ export { default as Menu } from "./Menu.astro";
 export { default as Modal } from "./Modal.astro";
 export { default as SkipLink } from "./SkipLink.astro";
 export { default as StructuredText } from "./StructuredText.astro";
+export { default as Voorhoede } from "./Voorhoede.astro";

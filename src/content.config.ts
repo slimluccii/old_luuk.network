@@ -1,4 +1,5 @@
 import type {
+  FooterRecord,
   PageFragment,
   PagesQuery,
   PagesQueryVariables
@@ -9,16 +10,17 @@ import query from "@datocms/pages.query.graphql";
 
 const pages = defineCollection({
   loader: async () => {
-    const { _site, allPages } = await executeQuery<
+    const { _site, allPages, footer } = await executeQuery<
       PagesQuery,
       PagesQueryVariables
-    >(query);
+      >(query);
     return allPages.map((page) => ({
       ...page,
-      seo: [..._site.faviconMetaTags, ...page.seo]
+      seo: [..._site.faviconMetaTags, ...page.seo],
+      footer
     }));
   },
-  schema: z.custom<PageFragment>()
+  schema: z.custom<PageFragment & { footer: FooterRecord }>()
 });
 
 export const collections = { pages };
