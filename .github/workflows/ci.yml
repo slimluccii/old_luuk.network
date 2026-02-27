@@ -69,7 +69,7 @@ jobs:
           path: dist
 
       - name: Zip function
-        run: zip -r dist/function.zip dist/function
+        run: cd dist/function && zip -r ../function.zip .
 
       - name: Deploy function to Scaleway
         uses: voorhoede/scaleway-functions-deploy-action/actions/deploy-function@main
