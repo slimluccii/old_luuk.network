@@ -9,7 +9,10 @@ const { class: className, ...props } = Astro.props;
 
 <enhanced-header>
   <header class:list={["header", className]} {...props}>
-    <Logo />
+    <a href="/">
+      <span class="sr-only">Luuk Brauckmann</span>
+      <Logo />
+    </a>
   </header>
 </enhanced-header>
 

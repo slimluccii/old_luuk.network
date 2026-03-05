@@ -1,3 +1,4 @@
+export { default as AppearanceSelector } from "./AppearanceSelector.astro";
 export { default as Blocks } from "./Blocks/Blocks.astro";
 export { default as Button } from "./Button.astro";
 export { default as DecoratedText } from "./DecoratedText.astro";

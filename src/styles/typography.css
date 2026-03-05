@@ -52,19 +52,19 @@ h6 {
 }
 
 h1 {
-  font-size: var(--typography-size-display);
+  font-size: var(--typography-scale-title);
 }
 
 h2 {
-  font-size: var(--typography-size-title);
+  font-size: var(--typography-scale-heading);
 }
 
 h3 {
-  font-size: var(--typography-size-heading);
+  font-size: var(--typography-scale-subtitle);
 }
 
 h4,
 h5,
 h6 {
-  font-size: var(--typography-size-body);
+  font-size: var(--typography-scale-body);
 }

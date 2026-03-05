@@ -1,0 +1,45 @@
+---
+import type { SiteLocale } from "@generated/datocms";
+import { Icon } from "@components";
+import { useTranslations } from "src/i18n/utils";
+
+const { locale } = Astro.params as { locale: SiteLocale };
+const { t } = useTranslations(locale);
+
+const appearances = ["system", "light", "dark"] as const;
+---
+
+<appearance-selector>
+  <div role="group" class="appearance-selector">
+    {
+      appearances.map((appearance) => (
+        <button
+          data-appearance={appearance}
+          class="appearance-selector-item"
+          aria-pressed={appearance === "system"}
+        >
+          <Icon name={appearance} />
+          <span class="sr-only">{t(appearance)}</span>
+        </button>
+      ))
+    }
+  </div>
+</appearance-selector>
+
+<style>
+  .appearance-selector {
+    display: flex;
+  }
+
+  .appearance-selector-item {
+    display: flex;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background-color: transparent;
+    padding: var(--spacing-size-xs);
+  }
+
+  .appearance-selector-item[aria-pressed="true"] {
+    background-color: var(--color-surface-base);
+  }
+</style>

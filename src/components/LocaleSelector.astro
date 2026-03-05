@@ -8,21 +8,21 @@ const { locale: localeParam } = Astro.params;
 
 <ul class="locale-selector">
   {
-    locales
-      .filter((locale) => locale !== localeParam)
-      .map((locale) => (
-        <li>
-          <Button
-            as="a"
-            href={`/${locale}/`}
-            variant="transparent"
-            icon={locale}
-            iconOnly={true}
-          >
-            {locale}
-          </Button>
-        </li>
-      ))
+    locales.map((locale) => (
+      <li>
+        <Button
+          as="a"
+          href={`/${locale}/`}
+          variant="transparent"
+          icon={locale}
+          iconOnly={true}
+          aria-current={locale === localeParam ? "page" : undefined}
+          class="locale-selector-item"
+        >
+          {locale}
+        </Button>
+      </li>
+    ))
   }
 </ul>
 
@@ -32,5 +32,9 @@ const { locale: localeParam } = Astro.params;
     margin: 0px;
     padding: 0px;
     list-style-type: "";
+  }
+
+  .locale-selector :global(.locale-selector-item[aria-current="page"]) {
+    background-color: var(--color-surface-base);
   }
 </style>
