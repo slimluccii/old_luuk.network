@@ -1,39 +1,27 @@
 ---
-import { Button } from "@components";
+import type { PagesQuery } from "@generated/datocms";
+import { Button, LocaleSelector } from "@components";
+import { cleanPath } from "@utils/clean-path";
 
-type Props = {
-  items: Array<{
-    title: string;
-    page: {
-      path: string;
-    };
-  }>;
-};
+type Props = NonNullable<PagesQuery["menu"]>;
 
-const { items } = Astro.props;
-const { pathname } = Astro.url;
 const { locale } = Astro.params;
-
-function getHref(page: Props["items"][0]["page"]) {
-  return `/${locale}/${page.path}${page.path && "/"}`;
-}
+const { items } = Astro.props;
 ---
 
-<enhanced-menu>
-  <Button class="menu-open-button" icon="bars">Menu</Button>
-
-  <dialog class="menu">
-    <Button class="menu-close-button" icon="xmark">Close</Button>
-    <nav>
-      <ul class="nav-list">
+<aside class="sidebar" aria-label="Sidebar">
+  <nav aria-label="Main navigation">
+    <div>
+      <h3 class="sr-only">Navigation</h3>
+      <ul class="navigation-list">
         {
           items.map(({ title, page }) => (
-            <li>
+            <li class="navigation-list-item">
               <Button
                 as="a"
-                href={getHref(page)}
-                aria-current={pathname === getHref(page) && "page"}
                 variant="transparent"
+                class="navigation-list-item__link"
+                href={cleanPath("/", "/", locale as string, "/", "/",String(page?.slug))}
               >
                 {title}
               </Button>
@@ -41,121 +29,50 @@ function getHref(page: Props["items"][0]["page"]) {
           ))
         }
       </ul>
-    </nav>
-  </dialog>
-</enhanced-menu>
+    </div>
 
-<script>
-  class EnhancedMenu extends HTMLElement {
-    openButton = this.querySelector<HTMLButtonElement>(".menu-open-button");
-    closeButton = this.querySelector<HTMLButtonElement>(".menu-close-button");
-    dialog = this.querySelector<HTMLDialogElement>("dialog");
+    <!-- <div>
+      <h3>Appearance</h3>
+      <AppearanceSelector />
+    </div> -->
 
-    constructor() {
-      super();
-    }
-
-    open = () => {
-      this.dialog.showModal();
-    };
-
-    close = () => {
-      this.dialog.close();
-    };
-
-    connectedCallback() {
-      this.openButton.addEventListener("click", this.open);
-      this.closeButton.addEventListener("click", this.close);
-    }
-
-    disconnectedCallback() {
-      this.openButton.removeEventListener("click", this.open);
-      this.closeButton.removeEventListener("click", this.close);
-    }
-  }
-
-  customElements.define("enhanced-menu", EnhancedMenu);
-</script>
+    <div class="locale-selector">
+      <h3 class="sr-only">Language</h3>
+      <LocaleSelector />
+    </div>
+  </nav>
+</aside>
 
 <style>
-  .menu-open-button {
+  .sidebar {
+    position: relative;
+  }
+
+  .sidebar > nav {
+    display: flex;
     position: fixed;
-    z-index: 999;
-    inset-block-end: max(
-      var(--spacing-size-lg),
-      env(safe-area-inset-bottom, 0px)
-    );
-    inset-inline-end: clamp(
-      var(--spacing-size-lg),
-      calc(50vw - 300px + var(--spacing-size-lg)),
-      calc(100vw - var(--spacing-size-lg))
-    );
+    flex-direction: column;
+    justify-content: center;
+    translate: -100%;
+    inset-block-start: 0;
+    inline-size: 100%;
+    max-inline-size: 15rem;
+    block-size: 100%;
   }
 
-  .menu-close-button {
-    position: absolute;
-    z-index: 999;
-    inset-block-end: var(--spacing-size-lg);
-    inset-inline-end: var(--spacing-size-lg);
-  }
-
-  @media screen and (max-width: 500px) {
-    .menu-open-button {
-      inset-inline-end: var(--spacing-size-lg);
-    }
-  }
-
-  .menu {
-    position: fixed;
-    transform-origin: calc(100% - var(--spacing-size-lg))
-      calc(100% - var(--spacing-size-lg));
-    transition:
-      opacity 0.05s ease-out 0.15s,
-      transform 0.2s ease-out;
-    margin: 0px;
-    inset-block-end: 0px;
-    inset-block-start: 0px;
-    inset-inline-end: clamp(0px, calc(50vw - 300px), calc(50vw - 300px));
-    inset-inline-start: clamp(0px, calc(50vw - 300px), calc(50vw - 300px));
-    border: 1px solid #0a2a3e;
-    background-color: #0a2a3e;
-    padding: var(--spacing-size-lg);
-    inline-size: 600px;
-    max-inline-size: 600px;
-    block-size: 100dvh;
-    max-block-size: 100dvh;
-  }
-
-  .menu:modal {
-    overflow: hidden;
-  }
-
-  body:has(.menu:modal) {
-    overflow: hidden;
-  }
-
-  @media screen and (max-width: 500px) {
-    .menu {
-      inset-inline-end: 0px;
-      inset-inline-start: 0px;
-      inline-size: 100vw;
-      max-inline-size: none;
-    }
-  }
-
-  .menu:open {
-    transform: scale(1);
-    opacity: 1;
-
-    @starting-style {
-      transform: scale(0);
-      opacity: 0;
-    }
-  }
-
-  .nav-list {
-    margin: 0px;
-    padding: 0px;
+  .navigation-list {
+    margin: 0;
+    padding: 0;
     list-style-type: "";
+  }
+
+  .navigation-list-item__link {
+    inline-size: 100%;
+  }
+
+  .locale-selector {
+    position: absolute;
+    inset-block-end: 0;
+    inline-size: 100%;
   }
 </style>

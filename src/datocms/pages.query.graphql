@@ -15,4 +15,12 @@ query Pages($locale: SiteLocale) {
     title
     text
   }
+  menu {
+    items {
+      page {
+        slug
+      }
+      title
+    }
+  }
 }

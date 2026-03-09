@@ -10,6 +10,7 @@ import config from "./codegen.config";
 
 export default defineConfig({
   site: "https://luuk.network",
+  trailingSlash: "always",
   adapter: scaleway(),
   prefetch: true,
   integrations: [

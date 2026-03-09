@@ -4,19 +4,10 @@ import type {
   InferGetStaticParamsType,
   InferGetStaticPropsType
 } from "astro";
-import type {
-  FooterQuery,
-  FooterQueryVariables,
-  SeoQuery,
-  SeoQueryVariables,
-  SiteLocale
-} from "@generated/datocms";
+import type { SiteLocale } from "@generated/datocms";
 import { getCollection } from "astro:content";
 import { Base } from "@layouts";
 import { Blocks } from "@components";
-import { executeQuery } from "@datocms/execute-query";
-import footerQuery from "@datocms/footer.query.graphql";
-import seoQuery from "@datocms/seo.query.graphql";
 
 export const getStaticPaths = (async () => {
   const pages = await getCollection("pages");
@@ -26,7 +17,7 @@ export const getStaticPaths = (async () => {
 
     return {
       params: { locale, path: path.length > 0 ? path : undefined },
-      props: { page: data }
+      props: data
     };
   });
 }) satisfies GetStaticPaths;
@@ -35,21 +26,14 @@ type Params = InferGetStaticParamsType<typeof getStaticPaths>;
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { locale } = Astro.params as Params;
-const { page } = Astro.props as Props;
-
-const { seo } = await executeQuery<SeoQuery, SeoQueryVariables>(seoQuery, {
-  locale
-});
-const { footer } = await executeQuery<FooterQuery, FooterQueryVariables>(
-  footerQuery,
-  { locale }
-);
+const { _site, page, footer, menu } = Astro.props as Props;
 ---
 
 <Base
   locale={locale}
-  seo={[...seo.faviconMetaTags, ...page.seo]}
+  seo={[..._site.faviconMetaTags, ...page.seo]}
   footer={footer}
+  menu={menu}
 >
   <Blocks blocks={page.content} />
 </Base>

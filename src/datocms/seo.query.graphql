@@ -1,9 +1,0 @@
-query Seo($locale: SiteLocale) {
-  seo: _site(locale: $locale) {
-    faviconMetaTags {
-      attributes
-      content
-      tag
-    }
-  }
-}

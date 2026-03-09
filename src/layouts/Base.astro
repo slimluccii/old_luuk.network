@@ -1,6 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
-import type { FooterQuery, SiteLocale } from "@generated/datocms";
+import type { PagesQuery, SiteLocale } from "@generated/datocms";
 import {
   AppearanceSelector,
   Button,
@@ -8,6 +8,7 @@ import {
   Header,
   IconsSprite,
   LocaleSelector,
+  Menu,
   SkipLink
 } from "@components";
 import { Seo } from "@datocms/astro";
@@ -24,10 +25,11 @@ import { useTranslations } from "src/i18n/utils";
 type Props = {
   locale: SiteLocale;
   seo: ComponentProps<typeof Seo>["data"];
-  footer: FooterQuery["footer"];
+  footer: PagesQuery["footer"];
+  menu: PagesQuery["menu"];
 };
 
-const { footer, locale, seo } = Astro.props;
+const { footer, locale, seo, menu } = Astro.props;
 const { t } = useTranslations(locale);
 ---
 
@@ -72,57 +74,7 @@ const { t } = useTranslations(locale);
   <body>
     <SkipLink href="#main-content">{t("skip_to_main_content")}</SkipLink>
 
-    <aside class="sidebar" aria-label="Sidebar">
-      <nav aria-label="Main navigation">
-        <div>
-          <h3 class="sr-only">Navigation</h3>
-          <ul class="navigation-list">
-            <li class="navigation-list-item">
-              <Button
-                as="a"
-                variant="transparent"
-                class="navigation-list-item__link"
-                href="/">Home</Button
-              >
-            </li>
-            <li class="navigation-list-item">
-              <Button
-                as="a"
-                variant="transparent"
-                class="navigation-list-item__link"
-                href="/">About me</Button
-              >
-            </li>
-            <li class="navigation-list-item">
-              <Button
-                as="a"
-                variant="transparent"
-                class="navigation-list-item__link"
-                href="/">Projects</Button
-              >
-            </li>
-            <li class="navigation-list-item">
-              <Button
-                as="a"
-                variant="transparent"
-                class="navigation-list-item__link"
-                href="/">Blog</Button
-              >
-            </li>
-          </ul>
-        </div>
-
-        <!-- <div>
-          <h3>Appearance</h3>
-          <AppearanceSelector />
-        </div> -->
-
-        <div class="locale-selector">
-          <h3 class="sr-only">Language</h3>
-          <LocaleSelector />
-        </div>
-      </nav>
-    </aside>
+    <Menu {...menu} />
 
     <div class="content-wrapper">
       <Header />
@@ -150,39 +102,6 @@ const { t } = useTranslations(locale);
     body {
       padding: var(--spacing-size-sm);
     }
-  }
-
-  .sidebar {
-    position: relative;
-  }
-
-  .sidebar > nav {
-    position: fixed;
-    translate: -100%;
-    inset-block-start: 0;
-    inline-size: 100%;
-    max-inline-size: 15rem;
-    block-size: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-
-  .navigation-list {
-    margin: 0;
-    padding: 0;
-    list-style-type: "";
-  }
-
-  .navigation-list-item__link {
-    inline-size: 100%;
-  }
-
-  .locale-selector {
-    position: absolute;
-    inset-block-end: 0;
-    inline-size: 100%;
   }
 
   .content-wrapper {

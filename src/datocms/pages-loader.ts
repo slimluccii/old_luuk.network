@@ -1,7 +1,9 @@
 import type {
+  FooterRecord,
   PageFragment,
   PagesQuery,
   PagesQueryVariables,
+  Site,
   SiteLocale
 } from "@generated/datocms";
 import type { Loader, LoaderContext } from "astro/loaders";
@@ -12,7 +14,7 @@ import { locales } from "@generated/datocms.json";
 
 export function pagesLoader(): Loader {
   return {
-    name: "posts",
+    name: "pages",
     load: async ({ store, parseData }: LoaderContext): Promise<void> => {
       store.clear();
 
@@ -22,23 +24,34 @@ export function pagesLoader(): Loader {
         )
       );
 
-      const allPages = results.flatMap((result, index) => {
+      const allPages = results.flatMap(({ allPages, ...rest }, index) => {
         const locale = locales[index];
-        return result.allPages.map((page) => ({
-          ...page,
-          _locale: locale
+        return allPages.map((page) => ({
+          _locale: locale,
+          page,
+          ...rest
         }));
       });
 
-      allPages.forEach(async (page) => {
-        const id = `${page._locale}/${page.slug}`;
+      allPages.forEach(async ({ _locale, page, ...rest }) => {
+        const id = `${_locale}/${page.slug}`;
         const parsedPage = await parseData({
           id,
-          data: page
+          data: {
+            _locale,
+            page,
+            ...rest
+          }
         });
         store.set({ id, data: parsedPage });
       });
     },
-    schema: z.custom<PageFragment>()
+    schema: z.object({
+      _locale: z.custom<SiteLocale>(),
+      _site: z.custom<PagesQuery['_site']>(),
+      page: z.custom<PageFragment>(),
+      footer: z.custom<PagesQuery['footer']>(),
+      menu: z.custom<PagesQuery['menu']>(),
+    })
   };
 }
