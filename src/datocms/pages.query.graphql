@@ -15,7 +15,7 @@ query Pages($locale: SiteLocale) {
     title
     text
   }
-  menu {
+  menu(locale: $locale) {
     items {
       page {
         slug
