@@ -31,7 +31,7 @@
     "@parcel/watcher": "2.5.6",
     "@rollup/plugin-graphql": "2.0.5",
     "@types/culori": "4.0.1",
-    "@types/node": "25.4.0",
+    "@types/node": "25.5.0",
     "@types/svg-sprite": "0.0.39",
     "@typescript-eslint/parser": "8.57.0",
     "culori": "4.0.2",
