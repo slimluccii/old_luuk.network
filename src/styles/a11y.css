@@ -22,6 +22,10 @@
   border: 0;
 }
 
+[target="_blank"]::after {
+  content: " (opens in a new tab)";
+}
+
 :lang(nl)[target="_blank"]::after {
-  content: " (opent in een nieuwe tabblad)";
+  content: " (wordt geopend in een nieuw tabblad)";
 }
