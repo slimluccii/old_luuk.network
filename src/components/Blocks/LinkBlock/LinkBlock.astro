@@ -2,14 +2,16 @@
 import type { LinkBlockFragment } from "@generated/datocms";
 import { Button } from "@components";
 import type { IconName } from "@generated/icons-sprite";
+import { cleanPath } from "@utils/clean-path";
 
 type Props = {
   block: LinkBlockFragment;
 };
 
+const { locale } = Astro.params;
 const { block } = Astro.props;
 ---
 
-<Button as="a" icon={block.icon?.name as IconName} href={block.page?.slug}
+<Button as="a" icon={block.icon?.name as IconName} href={cleanPath(locale as string, String(block.page?.slug))}
   >{block?.label}</Button
 >

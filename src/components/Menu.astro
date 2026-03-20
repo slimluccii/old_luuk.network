@@ -7,6 +7,7 @@ type Props = NonNullable<PagesQuery["menu"]>;
 
 const { locale } = Astro.params;
 const { items } = Astro.props;
+const { pathname } = Astro.url;
 ---
 
 <aside class="sidebar" aria-label="Sidebar">
@@ -21,7 +22,12 @@ const { items } = Astro.props;
                 as="a"
                 variant="transparent"
                 class="navigation-list-item__link"
-                href={cleanPath("/", "/", locale as string, "/", "/",String(page?.slug))}
+                href={cleanPath(locale as string, String(page?.slug))}
+                aria-current={
+                  pathname === cleanPath(locale as string, String(page?.slug))
+                    ? "page"
+                    : undefined
+                }
               >
                 {title}
               </Button>
@@ -68,6 +74,10 @@ const { items } = Astro.props;
 
   .navigation-list-item__link {
     inline-size: 100%;
+  }
+
+  .navigation-list-item__link[aria-current="page"] {
+    font-weight: bold;
   }
 
   .locale-selector {
